@@ -1,32 +1,18 @@
 import pickle
+import time
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from alexnet import AlexNet
 
 # TODO: Load traffic signs data.
 # Load pickled data
-import pickle
 
 # Fill this in based on where you saved the training and testing data
 
-training_file ='train.p'
-testing_file ='test.p'
+with open('./train.p', 'rb') as f:
+    data = pickle.load(f)
 
-with open(training_file, mode='rb') as f:
-    print("importing training file")
-    train = pickle.load(f)
-    print("file loaded")
-with open(testing_file, mode='rb') as f:
-    print("importing test file")
-    test = pickle.load(f)
-    print("file loaded")
-    
-X_train, y_train = train['features'], train['labels']
-X_test, y_test = test['features'], test['labels']
-print("data loaded")
-# TODO: Split data into training and validation sets.
-from sklearn.model_selection import train_test_split
-X_nn_train,X_validation,y_nn_train,y_validation= train_test_split(X_train,y_train,test_size=0.1,random_state=0)
+X_train, X_val, y_train, y_val = train_test_split(data['features'], data['labels'], test_size=0.33, random_state=0)
 # TODO: Define placeholders and resize operation.
 features = tf.placeholder(tf.float32, (None, 32, 32, 3))
 labels = tf.placeholder(tf.int64, None)
